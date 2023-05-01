@@ -67,13 +67,20 @@ bigquery_count_query = f"SELECT COUNT(*) FROM `{bigquery_credentials.dataset_id}
 bigquery_query_job = bigquery_client.query(bigquery_count_query)
 # Get the BigQuery record count
 bigquery_record_count = list(bigquery_query_job.result())[0][0]
-print(f"BigQuery Table Record Count: {bigquery_record_count}")
+
+
 oracle_count_query = f"SELECT COUNT(*) FROM {oracle_credentials.table_name}"
 oracle_cursor.execute(oracle_count_query)
-
 # Get the Oracle record count
 oracle_record_count = oracle_cursor.fetchone()[0]
-print(f"Oracle Table Record Count: {oracle_record_count}")
+#print(f"BigQuery Table Record Count: {bigquery_record_count}")
+#print(f"Oracle Table Record Count: {oracle_record_count}")
+if oracle_record_count == bigquery_record_count:
+    print("Record Count Matched,BigQuery Table Record Count:",bigquery_record_count,"Oracle Table Record Count:",oracle_record_count)
+else:
+    print("Record Count Mismatch found !!!,BigQuery Table Record Count:", bigquery_record_count, "Oracle Table Record Count:",
+          oracle_record_count)
+
 print("------------------------ Record Count Check Stop ----------------------")
 # Close the Oracle cursor and connection
 oracle_cursor.close()
